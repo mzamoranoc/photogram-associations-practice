@@ -25,7 +25,14 @@ class Photo < ApplicationRecord
 
   # Photo#likes: returns rows from the likes table associated to this photo by the photo_id column
 
-  ## Indirect associations
+  # Direct associations
+  belongs_to :poster, class_name: "User", foreign_key: "owner_id"
+  has_many :comments, class_name: "Comment", foreign_key: "photo_id", dependent: :destroy
+  has_many :likes, class_name: "Like", foreign_key: "photo_id", dependent: :destroy
 
+
+  # Indirect associations
   # Photo#fans: returns rows from the users table associated to this photo through its likes
+  has_many :fans, through: :likes, source: :fan
+
 end
